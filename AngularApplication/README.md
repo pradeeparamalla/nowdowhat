@@ -1,0 +1,1 @@
+This application is written using AngularJs. This application will act as a front end using rest api from a nodeJs application.
