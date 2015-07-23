@@ -10,7 +10,7 @@ function createToken(user) {
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
-        userName: user.username
+        userName: user.userName
     }, secretKey, {
         expirtesInMinute: 1440
     });
@@ -46,7 +46,7 @@ module.exports = function (app, express) {
     api.post('/login', function (req, res) {
         User.findOne({
             userName: req.body.userName
-        }).select('password').exec(function (err, user) {
+        }).select('password firstName lastName userName').exec(function (err, user) {
             if (err) throw err;
 
             if (!user) {
@@ -76,8 +76,6 @@ module.exports = function (app, express) {
 
 
     api.use(function (req, res, next) {
-        console.log("now validating token.");
-
         var token = req.body.token || req.param('token') || req.headers['x-access-token'];
         if (token) {
             jsonwebtoken.verify(token, secretKey, function (err, decoded) {
